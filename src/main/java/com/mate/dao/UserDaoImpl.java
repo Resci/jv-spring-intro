@@ -45,4 +45,15 @@ public class UserDaoImpl implements UserDao {
             throw new RuntimeException("User not found", e);
         }
     }
+
+    @Override
+    public User get(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM User where id = :id", User.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        } catch (Exception e) {
+            throw new RuntimeException("User not found", e);
+        }
+    }
 }
