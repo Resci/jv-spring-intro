@@ -2,6 +2,7 @@ package com.mate.dao;
 
 import com.mate.model.User;
 import java.util.List;
+import java.util.Optional;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -41,6 +42,15 @@ public class UserDaoImpl implements UserDao {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("FROM User", User.class)
                     .getResultList();
+        } catch (Exception e) {
+            throw new RuntimeException("User not found", e);
+        }
+    }
+
+    @Override
+    public Optional<User> get(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            return Optional.ofNullable(session.get(User.class, id));
         } catch (Exception e) {
             throw new RuntimeException("User not found", e);
         }
